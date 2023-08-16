@@ -142,8 +142,7 @@ const UserList = () => {
 		} else {
 			let input = document.getElementById("searchbar").value;
 			input = input.toLowerCase();
-			let x = document.getElementsByClassName("listItem");
-
+			let x = document.getElementsByClassName("LI");
 			for (let i = 0; i < x.length; i++) {
 				if (!x[i].innerHTML.toLowerCase().includes(input)) {
 					x[i].style.display = "none";
@@ -196,7 +195,7 @@ const UserList = () => {
 								{users.map((user, index) => (
 									<Link
 										key={index}
-										className=" flex items-center list-none list px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+										className="LI flex items-center list-none list px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
 										onClick={() => {
 											map.current.flyTo({
 												center: [
