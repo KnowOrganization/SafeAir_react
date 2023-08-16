@@ -2,16 +2,16 @@ import React, { useEffect, useState, useRef } from "react";
 import logo from "../assets/safeair.png";
 import emp from "../assets/teamwork.png";
 import "leaflet/dist/leaflet.css";
-import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
+import mapboxgl from "!mapbox-gl"; // eslint-disable-line import/no-webpack-loader-syntax
 import "mapbox-gl/dist/mapbox-gl.css";
-
 import { getDatabase, ref, onValue } from "firebase/database";
 import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-mapboxgl.accessToken = 'pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw';
+mapboxgl.accessToken =
+	"pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw";
 
 const UserList = () => {
 	const [users, setUsers] = useState([]);
@@ -62,6 +62,14 @@ const UserList = () => {
 								data[keys[i]].latitude,
 							],
 						},
+						properties: {
+							description:
+								"<strong>" +
+								data[keys[i]].email +
+								"</strong> <p>" +
+								data[keys[i]].status +
+								"</p>",
+						},
 					});
 				}
 				console.log("Geo json  " + JSON.stringify(geojson3));
@@ -99,6 +107,31 @@ const UserList = () => {
 						"icon-size": 0.25,
 					},
 				});
+				map.current.on("click", "loc", (e) => {
+					// Copy coordinates array.
+					const coordinates = e.features[0].geometry.coordinates.slice();
+					const description = e.features[0].properties.description;
+
+					// Ensure that if the map is zoomed out such that multiple
+					// copies of the feature are visible, the popup appears
+					// over the copy being pointed to.
+					while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+						coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+					}
+
+					new mapboxgl.Popup()
+						.setLngLat(coordinates)
+						.setHTML(description)
+						.addTo(map.current);
+				});
+				map.current.on("mouseenter", "loc", () => {
+					map.current.getCanvas().style.cursor = "pointer";
+				});
+
+				// Change it back to a pointer when it leaves.
+				map.current.on("mouseleave", "loc", () => {
+					map.current.getCanvas().style.cursor = "";
+				});
 			});
 		});
 	}, []);
@@ -121,11 +154,13 @@ const UserList = () => {
 		}
 	};
 
+	var popup = new mapboxgl.Popup()
+
 	return (
 		<div>
 			<div className="flex">
 				<aside className="flex flex-col w-1/4 h-screen px-5 py-8 overflow-y-auto bg-black border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
-					<Link to={'/'}>
+					<Link to={"/"}>
 						<img className="w-auto h-20 " src={logo} alt="" />
 					</Link>
 
@@ -172,6 +207,21 @@ const UserList = () => {
 												zoom: zoom,
 												speed: 3,
 											});
+											let setHTML =
+												"<strong>" +
+												userData[user].email +
+												"</strong> <p>" +
+												userData[user].status +
+												"</p>";
+											popup = new mapboxgl.Popup({
+												offset: [0, -20],
+											})
+												.setLngLat([
+													userData[user].longitude,
+													userData[user].latitude,
+												])
+												.setHTML(setHTML);
+											popup.addTo(map.current);
 										}}
 									>
 										<span
@@ -205,7 +255,10 @@ const UserList = () => {
 								</Link>
 							</div> */}
 							<div className="flex items-center mt-6">
-								<Link to={"/userlist"} className="flex items-center gap-x-2">
+								<Link
+									to={"/userlist"}
+									className="flex items-center gap-x-2"
+								>
 									<img
 										className="object-cover rounded-full h-7 w-7 profile__pic mr-2"
 										src={
@@ -241,6 +294,7 @@ const UserList = () => {
 										/>
 									</svg>
 								</a>
+								
 							</div>
 						</div>
 					</div>
