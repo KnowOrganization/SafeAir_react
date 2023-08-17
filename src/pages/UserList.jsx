@@ -243,7 +243,7 @@ const UserList = () => {
 						</nav>
 
 						<div className=" flex flex-col fixed bottom-0 left-0 pl-7 py-7 bg-black w-full ">
-							{/* <div>
+							<div>
 								<Link
 									to="/employees"
 									className="flex items-center gap-x-2"
@@ -253,7 +253,7 @@ const UserList = () => {
 										Employees
 									</span>
 								</Link>
-							</div> */}
+							</div>
 							<div className="flex items-center mt-6">
 								<Link
 									to={"/userlist"}

@@ -44,13 +44,13 @@ function Employees() {
 		<div>
 			<main>
 				<div className=" flex">
-					<aside class="flex flex-col w-1/4 h-screen px-5 py-8 overflow-y-auto bg-black border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
+					<aside className="flex flex-col w-1/4 h-screen px-5 py-8 overflow-y-auto bg-black border-r rtl:border-r-0 rtl:border-l dark:bg-gray-900 dark:border-gray-700">
 						<a href="/">
-							<img class="w-auto h-20 " src={logo} alt="" />
+							<img className="w-auto h-20 " src={logo} alt="" />
 						</a>
 
-						<div class="flex flex-col justify-between flex-1 mt-6">
-							<nav class="flex-1 -mx-3 space-y-5 mt-16 ">
+						<div className="flex flex-col justify-between flex-1 mt-6">
+							<nav className="flex-1 -mx-3 space-y-5 mt-16 ">
 								<div id="list">
 									<Link
 										to={"/employees"}
@@ -70,20 +70,20 @@ function Employees() {
 									</Link>
 								</div>
 							</nav>
-							<div class=" flex flex-col fixed bottom-0 left-0 pl-7 py-7 bg-black w-1/4 ">
+							<div className=" flex flex-col fixed bottom-0 left-0 pl-7 py-7 bg-black w-1/4 ">
 								<div>
 									<Link
 										to="/userlist"
-										class="flex items-center gap-x-2"
+										className="flex items-center gap-x-2"
 									>
 										<img src={location} alt="" className=" h-7" />
-										<span class="font-medium text-lg text-white dark:text-gray-200">
+										<span className="font-medium text-lg text-white dark:text-gray-200">
 											Back to Track Employees
 										</span>
 									</Link>
 								</div>
-								<div class="flex items-center justify-between mt-6 pr-5">
-									<a href="#" class="flex items-center gap-x-2">
+								<div className="flex items-center justify-between mt-6 pr-5">
+									<a href="#" className="flex items-center gap-x-2">
 										<img
 											className="object-cover rounded-full h-7 w-7 profile__pic mr-2"
 											src={
@@ -93,7 +93,7 @@ function Employees() {
 											}
 											alt="avatar"
 										/>
-										<span class="text-sm font-medium text-white dark:text-gray-200">
+										<span className="text-sm font-medium text-white dark:text-gray-200">
 											Safe Air
 										</span>
 									</a>
@@ -101,15 +101,15 @@ function Employees() {
 									<a
 										href="#"
 										onClick={() => auth.signOut()}
-										class="text-gray-500 transition-colors duration-200 rotate-180 dark:text-gray-400 rtl:rotate-0 hover:text-blue-500 dark:hover:text-blue-400"
+										className="text-gray-500 transition-colors duration-200 rotate-180 dark:text-gray-400 rtl:rotate-0 hover:text-blue-500 dark:hover:text-blue-400"
 									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											fill="none"
 											viewBox="0 0 24 24"
-											stroke-width="1.5"
+											strokeWidth="1.5"
 											stroke="currentColor"
-											class="w-5 h-5"
+											className="w-5 h-5"
 										>
 											<path
 												stroke-linecap="round"
@@ -123,58 +123,58 @@ function Employees() {
 						</div>
 					</aside>
 					<div className=" w-3/4 ">
-						<div class="relative overflow-x-auto px-32 mt-32">
+						<div className="relative overflow-x-auto px-32 mt-32">
                             <h1 className=" text-center text-2xl font-bold my-10">All Employees</h1>
-							<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-								<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+							<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+								<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 									<tr>
-										<th scope="col" class="px-6 py-3">
+										<th scope="col" className="px-6 py-3">
 											Product name
 										</th>
-										<th scope="col" class="px-6 py-3">
+										<th scope="col" className="px-6 py-3">
 											Color
 										</th>
-										<th scope="col" class="px-6 py-3">
+										<th scope="col" className="px-6 py-3">
 											Category
 										</th>
-										<th scope="col" class="px-6 py-3">
+										<th scope="col" className="px-6 py-3">
 											Price
 										</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+									<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 										<th
 											scope="row"
-											class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
 										>
 											Apple MacBook Pro 17"
 										</th>
-										<td class="px-6 py-4">Silver</td>
-										<td class="px-6 py-4">Laptop</td>
-										<td class="px-6 py-4">$2999</td>
+										<td className="px-6 py-4">Silver</td>
+										<td className="px-6 py-4">Laptop</td>
+										<td className="px-6 py-4">$2999</td>
 									</tr>
-									<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+									<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 										<th
 											scope="row"
-											class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
 										>
 											Microsoft Surface Pro
 										</th>
-										<td class="px-6 py-4">White</td>
-										<td class="px-6 py-4">Laptop PC</td>
-										<td class="px-6 py-4">$1999</td>
+										<td className="px-6 py-4">White</td>
+										<td className="px-6 py-4">Laptop PC</td>
+										<td className="px-6 py-4">$1999</td>
 									</tr>
-									<tr class="bg-white dark:bg-gray-800">
+									<tr className="bg-white dark:bg-gray-800">
 										<th
 											scope="row"
-											class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+											className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
 										>
 											Magic Mouse 2
 										</th>
-										<td class="px-6 py-4">Black</td>
-										<td class="px-6 py-4">Accessories</td>
-										<td class="px-6 py-4">$99</td>
+										<td className="px-6 py-4">Black</td>
+										<td className="px-6 py-4">Accessories</td>
+										<td className="px-6 py-4">$99</td>
 									</tr>
 								</tbody>
 							</table>
