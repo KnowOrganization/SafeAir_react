@@ -9,6 +9,9 @@ import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import axios from "axios";
+import moment from "moment";
+import { stringify } from "querystring";
 
 mapboxgl.accessToken =
 	"pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw";
@@ -19,9 +22,11 @@ const UserList = () => {
 	const navigate = useNavigate();
 	const mapContainer = useRef(null);
 	const map = useRef(null);
-	const [lat, setLat] = useState(18.472424188489);
-	const [lng, setLng] = useState(73.911555147437);
+	const [lat, setLat] = useState(18.518602); //18.518602, 73.855420
+	const [lng, setLng] = useState(73.855420);
 	const [zoom, setZoom] = useState(16);
+	const [loginData, setLoginData] = useState();
+	const [date, setDate] = useState("");
 
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -38,7 +43,7 @@ const UserList = () => {
 		});
 	}, []);
 
-	useEffect(() => {
+	useEffect(async () => {
 		let intervalId = null;
 		intervalId = setInterval(() => {
 			const db = getDatabase();
@@ -72,10 +77,33 @@ const UserList = () => {
 						},
 					});
 				}
-				console.log("Geo json  " + JSON.stringify(geojson3));
+				// console.log("Geo json  " + JSON.stringify(geojson3));
 				map.current.getSource("loc").setData(geojson3);
 			});
 		}, 1000);
+
+		let config = {
+			method: "get",
+			maxBodyLength: Infinity,
+			url: "http://localhost:4000/getLoginData",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		};
+
+		await axios
+			.request(config)
+			.then((response) => {
+				console.log(response.data);
+				setLoginData(response.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+
+		let dateFormat1 = moment().format("DD-MMM-YYYY");
+		setDate(dateFormat1);
+
 		return () => {
 			clearInterval(intervalId);
 		};
@@ -89,7 +117,9 @@ const UserList = () => {
 			center: [lng, lat],
 			zoom: zoom,
 		});
-
+		map.current.on("style.load", () => {
+			
+		});
 		map.current.on("load", async () => {
 			map.current.loadImage("/location.png", (error, image) => {
 				if (error) throw error;
@@ -133,6 +163,60 @@ const UserList = () => {
 					map.current.getCanvas().style.cursor = "";
 				});
 			});
+			// Insert the layer beneath any symbol layer.
+			const layers = map.current.getStyle().layers;
+			const labelLayerId = layers.find(
+				(layer) => layer.type === "symbol" && layer.layout["text-field"]
+			).id;
+
+			// The 'building' layer in the Mapbox Streets
+			// vector tileset contains building height data
+			// from OpenStreetMap.
+			map.current.addLayer(
+				{
+					id: "add-3d-buildings",
+					source: "composite",
+					"source-layer": "building",
+					filter: ["==", "extrude", "true"],
+					type: "fill-extrusion",
+					minzoom: 15,
+					paint: {
+						"fill-extrusion-color": "#aaa",
+
+						// Use an 'interpolate' expression to
+						// add a smooth transition effect to
+						// the buildings as the user zooms in.
+						"fill-extrusion-height": [
+							"interpolate",
+							["linear"],
+							["zoom"],
+							15,
+							0,
+							15.05,
+							["get", "height"],
+						],
+						"fill-extrusion-base": [
+							"interpolate",
+							["linear"],
+							["zoom"],
+							15,
+							0,
+							15.05,
+							["get", "min_height"],
+						],
+						"fill-extrusion-opacity": 0.6,
+					},
+				},
+				labelLayerId
+			);
+			map.current.addSource('mapbox-dem', {
+				'type': 'raster-dem',
+				'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+				'tileSize': 512,
+				'maxzoom': 14
+			});
+			// add the DEM source as a terrain layer with exaggerated height
+			map.current.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 2 });
 		});
 	}, []);
 
@@ -142,8 +226,7 @@ const UserList = () => {
 		} else {
 			let input = document.getElementById("searchbar").value;
 			input = input.toLowerCase();
-			let x = document.getElementsByClassName("listItem");
-
+			let x = document.getElementsByClassName("LI");
 			for (let i = 0; i < x.length; i++) {
 				if (!x[i].innerHTML.toLowerCase().includes(input)) {
 					x[i].style.display = "none";
@@ -154,7 +237,7 @@ const UserList = () => {
 		}
 	};
 
-	var popup = new mapboxgl.Popup()
+	var popup = new mapboxgl.Popup();
 
 	return (
 		<div>
@@ -196,7 +279,7 @@ const UserList = () => {
 								{users.map((user, index) => (
 									<Link
 										key={index}
-										className=" flex items-center list-none list px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+										className="LI flex items-center list-none list px-7 py-3 text-white bg-gray-800 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
 										onClick={() => {
 											map.current.flyTo({
 												center: [
@@ -212,6 +295,23 @@ const UserList = () => {
 												userData[user].email +
 												"</strong> <p>" +
 												userData[user].status +
+												"</p>" +
+												"<p>" +
+												"First Login: " +
+												loginData
+													.find(
+														(u) => u.user === userData[user].email
+													)
+													.data.find((d) => d.date === date)
+													.sessions[0].logInTime +
+												"</p> <p>" +
+												"Login at : " +
+												loginData
+													.find(
+														(u) => u.user === userData[user].email
+													)
+													.data.find((d) => d.date === date)
+													.sessions[0].logInLatLng +
 												"</p>";
 											popup = new mapboxgl.Popup({
 												offset: [0, -20],
@@ -243,7 +343,7 @@ const UserList = () => {
 						</nav>
 
 						<div className=" flex flex-col fixed bottom-0 left-0 pl-7 py-7 bg-black w-full ">
-							{/* <div>
+							<div>
 								<Link
 									to="/employees"
 									className="flex items-center gap-x-2"
@@ -253,7 +353,7 @@ const UserList = () => {
 										Employees
 									</span>
 								</Link>
-							</div> */}
+							</div>
 							<div className="flex items-center mt-6">
 								<Link
 									to={"/userlist"}
@@ -294,7 +394,6 @@ const UserList = () => {
 										/>
 									</svg>
 								</a>
-								
 							</div>
 						</div>
 					</div>
