@@ -1,46 +1,13 @@
 import React, { useEffect, useState } from "react";
 import logo from "../assets/safeair.png";
 import location from "../assets/location.png";
-
-import { getDatabase, ref, onValue } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
-import { onAuthStateChanged } from "firebase/auth";
-// import { initializeApp } from 'firebase-admin/app';
 
-// const app = initializeApp();
-
-
-
-  
 
 function Employees() {
 
-    // useEffect(() => {
-    //     listAllUsers();
-    // }, []);
-
-
-    // const listAllUsers = (nextPageToken) => {
-    //     // List batch of users, 1000 at a time.
-    //     getAuth()
-    //       .listUsers(1000, nextPageToken)
-    //       .then((listUsersResult) => {
-    //         listUsersResult.users.forEach((userRecord) => {
-    //           console.log('user', userRecord.toJSON());
-    //         });
-    //         if (listUsersResult.pageToken) {
-    //           // List next batch of users.
-    //           listAllUsers(listUsersResult.pageToken);
-    //         }
-    //       })
-    //       .catch((error) => {
-    //         console.log('Error listing users:', error);
-    //       });
-    //   };
-
-      return (
+	return (
 		<div>
 			<main>
 				<div className=" flex">
@@ -66,6 +33,14 @@ function Employees() {
 									>
 										<span className="mx-2 text-lg font-medium">
 											Add Employees
+										</span>
+									</Link>
+									<Link
+										to={"/attendance"}
+										className="listItem flex  px-7 py-5 text-white bg-gray-700 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+									>
+										<span className="mx-2 text-lg font-medium">
+											Export Employees data
 										</span>
 									</Link>
 								</div>
@@ -124,7 +99,9 @@ function Employees() {
 					</aside>
 					<div className=" w-3/4 ">
 						<div className="relative overflow-x-auto px-32 mt-32">
-                            <h1 className=" text-center text-2xl font-bold my-10">All Employees</h1>
+							<h1 className=" text-center text-2xl font-bold my-10">
+								All Employees
+							</h1>
 							<table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 								<thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 									<tr>

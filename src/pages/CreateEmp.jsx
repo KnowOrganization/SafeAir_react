@@ -3,35 +3,9 @@ import logo from "../assets/safeair.png";
 import location from "../assets/location.png";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
-// import {
-// 	getAuth,
-// 	createUserWithEmailAndPassword,
-// 	updateProfile,
-// 	onAuthStateChanged,
-// } from "firebase/auth";
-// import { collection, addDoc } from "firebase/firestore";
 import toast, { Toaster } from "react-hot-toast";
-import { Helmet } from "react-helmet";
 import axios from "axios";
-// import {getAuth} from "firebase-admin/auth"
-// import admin from "firebase-admin"
-// const serviceAccount = "..serviceAccountKey.json";
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount)
-// });
-// import { initializeApp } from 'firebase-admin/app';
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDN_VWXlrqVGAfR9kBeLnvybeL2-gv-r5I",
-//   authDomain: "safeair-b0c14.firebaseapp.com",
-//   databaseURL: "https://safeair-b0c14-default-rtdb.asia-southeast1.firebasedatabase.app",
-//   projectId: "safeair-b0c14",
-//   storageBucket: "safeair-b0c14.appspot.com",
-//   messagingSenderId: "882266510112",
-//   appId: "1:882266510112:web:380ceba54239121206bd45"
-// };
-// const app = initializeApp();
-// import * as firebase from "firebase-admin";
-// import { adminAuth } from '../admin'
+
 
 function CreateEmp() {
 	const [name, setName] = useState("");
@@ -39,8 +13,6 @@ function CreateEmp() {
 	const [number, setNumber] = useState("");
 	const [password, setPassword] = useState("");
 	const [type, setType] = useState(false);
-
-	console.log(name, email, password, type);
 
 	const createUser = () => {
 		let data = JSON.stringify({
@@ -59,7 +31,6 @@ function CreateEmp() {
 			},
 			data: data,
 		};
-
 		axios
 			.request(config)
 			.then((response) => {
@@ -126,6 +97,14 @@ function CreateEmp() {
 								>
 									<span className="mx-2 text-lg font-medium">
 										Add Employees
+									</span>
+								</Link>
+								<Link
+									to={"/attendance"}
+									className="listItem flex  px-7 py-5 text-white bg-gray-700 my-5 mx-5 transition-colors duration-300 transform rounded-full dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
+								>
+									<span className="mx-2 text-lg font-medium">
+										Export Employees data
 									</span>
 								</Link>
 							</div>
