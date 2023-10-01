@@ -11,8 +11,6 @@ import { auth, db } from "../firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import axios from "axios";
 import moment from "moment";
-import { ZIM } from "zego-zim-web";
-import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 
 mapboxgl.accessToken =
 	"pk.eyJ1IjoibXNhbWlkZXYiLCJhIjoiY2xqc213cDdlMGFxbzNocXNyeTc4MGhlMyJ9.Gl7IzxtX3SOQ8fcHNwTpJw";
@@ -28,38 +26,6 @@ const UserList = () => {
 	const [zoom, setZoom] = useState(16);
 	const [loginData, setLoginData] = useState();
 	const [date, setDate] = useState("");
-
-	const userID = "admin";
-	const userName = "admin";
-	const appID = 269204600;
-	const serverSecret = "07364575b67641ea3217a9fd7e2b4e1b";
-	const TOKEN = ZegoUIKitPrebuilt.generateKitTokenForTest(
-		appID,
-		serverSecret,
-		null,
-		userID,
-		userName
-	);
-	const zp = ZegoUIKitPrebuilt.create(TOKEN);
-	zp.addPlugins({ ZIM });
-
-	const invite = (email) => {
-		const targetUser = {
-			userID: email,
-			userName: email,
-		};
-		zp.sendCallInvitation({
-			callees: [targetUser],
-			callType: ZegoUIKitPrebuilt.InvitationTypeVideoCall,
-			timeout: 60, // Timeout duration (second). 60s by default, range from [1-600s].
-		})
-			.then((res) => {
-				console.warn(res);
-			})
-			.catch((err) => {
-				console.warn(err);
-			});
-	};
 
 	useEffect(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -143,7 +109,7 @@ const UserList = () => {
 	}, []);
 
 	useEffect(() => {
-		if (map.current) return; // initialize map only once
+		if (map.current) return () => {}; // initialize map only once
 		map.current = new mapboxgl.Map({
 			container: mapContainer.current,
 			style: "mapbox://styles/mapbox/streets-v12",
