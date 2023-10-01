@@ -4,7 +4,6 @@ import location from "../assets/location.png";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase";
 import axios from "axios";
-import { stringify } from "querystring";
 
 function Employees() {
 	const [userData, setUserData] = useState();
@@ -28,8 +27,6 @@ function Employees() {
 			.catch((error) => {
 				console.log(error);
 			});
-
-		// process the data to fit the format of the excel file
 	}, []);
 
 	return (
