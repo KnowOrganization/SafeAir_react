@@ -11,7 +11,7 @@ const Attendance = () => {
 	const [dataToExport, setDataToExport] = useState([]);
     const [loadingData, setLoadingData] = useState(false);
 
-	useEffect(async () => {
+	useEffect( () => {
 		let config = {
 			method: "get",
 			maxBodyLength: Infinity,
@@ -21,6 +21,7 @@ const Attendance = () => {
 				"Content-Type": "application/json",
 			},
 		};
+		async function fetchData() {
 		await axios
 			.request(config)
 			.then((response) => {
@@ -30,8 +31,8 @@ const Attendance = () => {
 			.catch((error) => {
 				console.log(error);
 			});
-
-		// process the data to fit the format of the excel file
+		}
+		fetchData();
 	}, []);
 	useEffect(() => {
 		let excel = [];

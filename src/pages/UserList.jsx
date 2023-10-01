@@ -42,7 +42,7 @@ const UserList = () => {
 		});
 	}, []);
 
-	useEffect(async () => {
+	useEffect(() => {
 		let intervalId = null;
 		intervalId = setInterval(() => {
 			const db = getDatabase();
@@ -90,15 +90,18 @@ const UserList = () => {
 			},
 		};
 
-		await axios
-			.request(config)
-			.then((response) => {
-				console.log(response.data);
-				setLoginData(response.data);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
+		async function fetchData() {
+			await axios
+				.request(config)
+				.then((response) => {
+					console.log(response.data);
+					setLoginData(response.data);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+		fetchData();
 
 		let dateFormat1 = moment().format("DD-MMM-YYYY");
 		setDate(dateFormat1);
@@ -109,7 +112,7 @@ const UserList = () => {
 	}, []);
 
 	useEffect(() => {
-		if (map.current) return () => {}; // initialize map only once
+		// if (map.current) return () => {}; // initialize map only once
 		map.current = new mapboxgl.Map({
 			container: mapContainer.current,
 			style: "mapbox://styles/mapbox/streets-v12",
@@ -274,7 +277,7 @@ const UserList = () => {
 							</div>
 							<div id="list" className=" mb-24">
 								{users.map((user, index) => (
-									<div className=" flex items-center">
+									<div className=" flex items-center" key={index}>
 										{/* <button
 											onClick={() => invite(userData[user].email)}
 											className=" bg-white"
