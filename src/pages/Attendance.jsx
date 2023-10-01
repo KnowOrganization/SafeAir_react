@@ -16,7 +16,7 @@ const Attendance = () => {
 			method: "get",
 			maxBodyLength: Infinity,
 
-			url: "https://safeair-backend.onrender.com/getLoginData",
+			url: "http://ec2-15-207-107-191.ap-south-1.compute.amazonaws.com/getLoginData",
 			headers: {
 				"Content-Type": "application/json",
 			},
