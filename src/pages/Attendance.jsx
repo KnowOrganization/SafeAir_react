@@ -16,7 +16,7 @@ const Attendance = () => {
 			method: "get",
 			maxBodyLength: Infinity,
 
-			url: "https://safeair.knoworganization.com//getLoginData",
+			url: "https://safeair.knoworganization.com/getLoginData",
 			headers: {
 				"Content-Type": "application/json",
 			},
