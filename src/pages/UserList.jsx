@@ -84,7 +84,7 @@ const UserList = () => {
 		let config = {
 			method: "get",
 			maxBodyLength: Infinity,
-			url: "http://safeair.knoworganization.com/getLoginData",
+			url: "https://safeair.knoworganization.com/getLoginData",
 			headers: {
 				"Content-Type": "application/json",
 			},

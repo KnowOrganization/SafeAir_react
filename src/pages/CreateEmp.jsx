@@ -25,7 +25,7 @@ function CreateEmp() {
 		let config = {
 			method: "post",
 			maxBodyLength: Infinity,
-			url: "http://safeair.knoworganization.com/createUser",
+			url: "https://safeair.knoworganization.com/createUser",
 			headers: {
 				"Content-Type": "application/json",
 			},

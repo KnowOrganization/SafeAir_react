@@ -13,7 +13,7 @@ function Employees() {
 			method: "get",
 			maxBodyLength: Infinity,
 
-			url: "http://safeair.knoworganization.com/getAllUsers",
+			url: "https://safeair.knoworganization.com/getAllUsers",
 			headers: {
 				"Content-Type": "application/json",
 			},
