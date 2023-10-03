@@ -13,7 +13,7 @@ function Employees() {
 			method: "get",
 			maxBodyLength: Infinity,
 
-			url: "http://ec2-15-207-107-191.ap-south-1.compute.amazonaws.com/getAllUsers",
+			url: "http://safeair.knoworganization.com/getAllUsers",
 			headers: {
 				"Content-Type": "application/json",
 			},

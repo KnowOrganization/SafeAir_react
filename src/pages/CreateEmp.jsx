@@ -25,7 +25,7 @@ function CreateEmp() {
 		let config = {
 			method: "post",
 			maxBodyLength: Infinity,
-			url: "http://ec2-15-207-107-191.ap-south-1.compute.amazonaws.com/createUser",
+			url: "http://safeair.knoworganization.com/createUser",
 			headers: {
 				"Content-Type": "application/json",
 			},
