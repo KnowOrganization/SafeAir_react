@@ -8,7 +8,7 @@ import axios from "axios";
 function Employees() {
 	const [userData, setUserData] = useState();
 
-	useEffect( () => {
+	useEffect(() => {
 		let config = {
 			method: "get",
 			maxBodyLength: Infinity,
@@ -20,17 +20,37 @@ function Employees() {
 		};
 		async function fetchData() {
 			await axios
+				.request(config)
+				.then((response) => {
+					console.log(response.data.users);
+					setUserData(response.data.users);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
+		fetchData();
+	}, []);
+
+	const deleteUser = async (uid) => {
+		let config = {
+			method: "delete",
+			maxBodyLength: Infinity,
+			url: "https://safeair.knoworganization.com/deleteUser/" + uid,
+			headers: {},
+		};
+
+		axios
 			.request(config)
 			.then((response) => {
-				console.log(response.data.users);
-				setUserData(response.data.users);
+				console.log(JSON.stringify(response.data));
 			})
 			.catch((error) => {
 				console.log(error);
 			});
-		}
-		fetchData();
-	}, []);
+
+		window.location.reload(false)
+	};
 
 	return (
 		<div>
@@ -139,6 +159,9 @@ function Employees() {
 										<th scope="col" className="px-6 py-3">
 											Phone
 										</th>
+										<th scope="col" className="px-6 py-3">
+											Edit
+										</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -156,10 +179,23 @@ function Employees() {
 														? user.displayName
 														: user.email}
 												</th>
-												<td className="px-6 py-4">{ user.email }</td>
-												<td className="px-6 py-4">{user.phoneNumber != null
+												<td className="px-6 py-4">{user.email}</td>
+												<td className="px-6 py-4">
+													{user.phoneNumber != null
 														? user.phoneNumber
-														: " - "}</td>
+														: " - "}
+												</td>
+												<td className="px-6 py-4">
+													<button
+														type="button"
+														class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+														onClick={() => {
+															deleteUser(user.uid);
+														}}
+													>
+														Delete
+													</button>
+												</td>
 											</tr>
 										))
 									) : (
@@ -168,6 +204,7 @@ function Employees() {
 												scope="row"
 												className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
 											></th>
+											<td className="px-6 py-4"></td>
 											<td className="px-6 py-4"></td>
 											<td className="px-6 py-4"></td>
 										</tr>
