@@ -46,8 +46,8 @@ const Attendance = () => {
                     logOutTime: data1.sessions[data1.sessions.length - 1].logOutTime,
                     logInLat: data1.sessions[0].logInLocation[0],
                     logInLong: data1.sessions[0].logInLocation[1],
-                    logOutLat: data1.sessions[data1.sessions.length - 1].logOutLocation[0],
-                    logOutLong: data1.sessions[data1.sessions.length - 1].logOutLocation[1],
+                    logOutLat: (data1.sessions[data1.sessions.length - 1].logOutLocation ? data1.sessions[data1.sessions.length - 1].logOutLocation[0] : "undefined"),
+                    logOutLong: (data1.sessions[data1.sessions.length - 1].logOutLocation ? data1.sessions[data1.sessions.length - 1].logOutLocation[1] : "undefined"),
                 };
                 excel.push(temp);
                 console.log(temp);
